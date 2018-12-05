@@ -24,7 +24,7 @@ import javax.swing.JFrame;
       Container c = frm.getContentPane();
       c.setLayout(new BorderLayout());
       c.setBackground(Color.LIGHT_GRAY);
-      Line line = new Line(1000);
+      LineSecond line = new LineSecond(1000);
       c.add(line);
       frm.setSize(600, 600);
       frm.setVisible(true);

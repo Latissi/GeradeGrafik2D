@@ -27,13 +27,15 @@ public class LineSecond extends JComponent implements Runnable{
   private Thread thd;
   private AffineTransform at;
   private long time;
+  private int angle;
   
   public LineSecond(long time)
   {
     pinsel = new BasicStroke(DICKE);
     line = new Line2D.Float();
     at = new AffineTransform();
-    this.time = time; 
+    this.time = time;
+    this.angle = 0;
   }
   
   public void startThread()
@@ -47,9 +49,7 @@ public class LineSecond extends JComponent implements Runnable{
   {
     super.paintComponent(g);
     Graphics2D g2 = (Graphics2D) g;
-    
-    g2.setTransform(this.at);
-    
+        
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
                         RenderingHints.VALUE_ANTIALIAS_ON);
     
@@ -60,8 +60,10 @@ public class LineSecond extends JComponent implements Runnable{
     
     g2.setStroke(pinsel);
     
-    this.line.setLine(breite/2.0, hoehe/2.0, 
-                (breite/2.0) + radius, (hoehe/2.0));
+    this.line.setLine(0,0, radius, 0);
+    
+    g2.translate(breite/2.0, hoehe/2.0);
+    g2.rotate(Math.toRadians(angle));
     
     g2.draw(line);
   }
@@ -70,8 +72,13 @@ public class LineSecond extends JComponent implements Runnable{
   public void run()
   {
     while(true){
-      this.at.rotate(Math.toRadians(6), ((this.getWidth() - 1)/2.0), 
-              (this.getHeight() - 1)/2.0);
+      angle += 6;
+      
+      if (angle >= 360)
+      {
+        angle = 0;
+      }
+      
       this.repaint();
       try
       {
